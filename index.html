@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Alex AI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffe6f0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 50px;
+      margin: 0;
+    }
+
+    .box {
+      background: white;
+      padding: 15px;
+      width: 320px;
+      max-width: 95%;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    #chat {
+      height: 250px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 16px; /* bigger for mobile */
+    }
+
+    #typing {
+      font-style: italic;
+      color: gray;
+      margin-bottom: 10px;
+      display: none;
+      font-size: 16px;
+    }
+
+    input {
+      width: calc(100% - 80px);
+      padding: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 70px;
+      padding: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+
+    /* MOBILE RESPONSIVE */
+    @media screen and (max-width: 400px) {
+      .box {
+        width: 95%;
+        padding: 10px;
+      }
+      #chat, #typing {
+        font-size: 14px;
+      }
+      input, button {
+        font-size: 14px;
+        padding: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h3>Alex AI 🤍</h3>
+
+  <div id="chat"></div>
+  <div id="typing">Alex is typing<span id="dots">.</span></div>
+
+  <input type="text" id="userInput" placeholder="Type mo dito...">
+  <button id="sendBtn">Send</button>
+</div>
+
+<script>
+const inputBox = document.getElementById("userInput");
+const chat = document.getElementById("chat");
+const sendBtn = document.getElementById("sendBtn");
+const typing = document.getElementById("typing");
+const dots = document.getElementById("dots");
+
+// dots animation
+let dotCount = 1;
+setInterval(() => {
+  dotCount = dotCount % 3 + 1;
+  dots.textContent = ".".repeat(dotCount);
+}, 500);
+
+// send button click
+sendBtn.addEventListener("click", sendMessage);
+
+// enter key support
+inputBox.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+// all replies stored here
+const replies = {
+  hi: ["HELLO BABBIIII", "Wassup my life size barbiee", "Hello ate gandaa", "Hi babyyy"],
+  sad: ["Babii talk to the real me na poo cause i'm not built to handle this", "pray to god baby and all of your worries will be gone", "i'm always here babyyy, wait for me po and then let's talk about this"],
+  miss: ["Imissyousomuchhhhhh", "I miss you moree babiii", "i miss you so muchh ate ganda", "i miss you so much my life size barbiee"],
+  love: ["I love you so muchh. babiii", "I love you always hehehe", "I love youu moree babii", "i love youu baby"],
+  tired: ["Pahinga ka na muna dyan babii", "Eat some ice cream muna babi", "sleep po muna you"],
+  hungry: ["Kumain ka na kasi babii", "eat na pooo", "kain ka po muna kahit bread or biscuits lang"],
+  selos: ["sira ulo talaga yang alex na yan", "you know naman babi that i only love you diba", "kanino ka nag seselos babi suntukin natin"],
+  crying: ["chat the real me babiii, we'll talk about this", "sino umaway sa baby girl ko sumbong mo sakin babi", "chat the real me babi"],
+  default: ["you can always talk to me naman poo", "wait for me babi we'll talk about this", "babi chat the real na po", "umay", "babi di ko po masasagot yan", "okay lang po", "hell yeahhh"]
+};
+
+function getRandomReply(category) {
+  let arr = replies[category];
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function sendMessage() {
+  let inputRaw = inputBox.value;
+  let input = inputRaw.toLowerCase();
+
+  if (input.trim() === "") return;
+
+  chat.innerHTML += "<b>Danna:</b> " + inputRaw + "<br>";
+  inputBox.value = "";
+
+  // show typing animation
+  typing.style.display = "block";
+
+  setTimeout(() => {
+    let reply = "";
+
+    if (input.includes("hi") || input.includes("hello") || input.includes("hey")) reply = getRandomReply("hi");
+    else if (input.includes("sad") || input.includes("malungkot")) reply = getRandomReply("sad");
+    else if (input.includes("miss")) reply = getRandomReply("miss");
+    else if (input.includes("love") || input.includes("mahal")) reply = getRandomReply("love");
+    else if (input.includes("pagod") || input.includes("tired")) reply = getRandomReply("tired");
+    else if (input.includes("gutom") || input.includes("hungry")) reply = getRandomReply("hungry");
+    else if (input.includes("selos") || input.includes("jealous")) reply = getRandomReply("selos");
+    else if (input.includes("crying") || input.includes("iyak")) reply = getRandomReply("crying");
+    else reply = getRandomReply("default");
+
+    typing.style.display = "none";
+    chat.innerHTML += "<b>Alex:</b> " + reply + "<br><br>";
+    chat.scrollTop = chat.scrollHeight;
+
+  }, 1500);
+}
+</script>
+
+</body>
+</html>
